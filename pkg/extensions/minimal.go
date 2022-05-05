@@ -1,46 +1,72 @@
 package extensions
 
 import (
-	"reflect"
-
-	"zotregistry.io/zot/errors"
+	"context"
+	goSync "sync"
+	"time"
+	"github.com/gorilla/mux"
+	"zotregistry.io/zot/pkg/api/config"
 	"zotregistry.io/zot/pkg/log"
+	"zotregistry.io/zot/pkg/storage"
 )
 
-type Extensions struct {
-	log log.Logger
+// DownloadTrivyDB ...
+var DownloadTrivyDB = func(dbDir string, log log.Logger, // nolint: gochecknoglobals
+	updateInterval time.Duration,
+) error {
+	return nil
 }
 
-var Ext = &Extensions{ // nolint: gochecknoglobals
-	log: log.NewLogger("debug", ""),
-	// activated: make(map[string]bool),
+// EnableMetricsExtension ...
+var EnableMetricsExtension = func(config *config.Config, log log.Logger, rootDir string) { // nolint: gochecknoglobals
+	log.Warn().Msg("skipping enabling metrics extension because given zot binary doesn't support " +
+		"this extension, please build a binary that includes this feature")
 }
 
-func (e *Extensions) Invoke(meth string, args ...interface{}) []reflect.Value {
-	e.log.Printf("Starting the invocation procedure for %s\n", meth)
-
-	if !e.isActivated(meth) {
-		e.log.Printf("The %s extension you are trying to use hasn't been implemented in the binary", meth)
-
-		return []reflect.Value{
-			reflect.ValueOf(errors.ErrMethodNotSupported),
-		}
-	}
-
-	inputs := make([]reflect.Value, len(args))
-	for i := range args {
-		inputs[i] = reflect.ValueOf(args[i])
-	}
-
-	return reflect.ValueOf(e).MethodByName(meth).Call(inputs)
+// EnableSearchExtension ...
+var EnableSearchExtension = func(config *config.Config, log log.Logger, rootDir string) { // nolint: gochecknoglobals
+	log.Warn().Msg("skipping enabling search extension because given zot binary doesn't support " +
+		"this extension, please build a binary that includes this feature")
 }
 
-func (e *Extensions) isActivated(extension string) bool {
-	if !reflect.ValueOf(Ext).MethodByName(extension).IsValid() {
-		return false
-	}
+// EnableSyncExtension ...
+var EnableSyncExtension = func(ctx context.Context, // nolint: gochecknoglobals
+	config *config.Config, wg *goSync.WaitGroup,
+	storeController storage.StoreController, log log.Logger,
+) {
+	log.Warn().Msg("skipping enabling sync extension because given zot binary doesn't support any extensions," +
+		"please build zot full binary for this feature")
+}
 
-	e.log.Printf("The following extension is valid %v\n", extension)
+// EnableScrubExtension ...
+var EnableScrubExtension = func(config *config.Config, // nolint: gochecknoglobals
+	storeController storage.StoreController,
+	log log.Logger,
+) {
+	log.Warn().Msg("skipping enabling scrub extension because given zot binary doesn't support any extensions," +
+		"please build zot full binary for this feature")
+}
 
-	return true
+// SetupMetricsRoutes ...
+var SetupMetricsRoutes = func(conf *config.Config, router *mux.Router, // nolint: gochecknoglobals
+	storeController storage.StoreController, log log.Logger,
+) {
+	log.Warn().Msg("skipping setting up metrics routes because given zot binary doesn't support " +
+		"metrics extension, please build a binary that includes this feature")
+}
+
+var SetupSearchRoutes = func(conf *config.Config, router *mux.Router, // nolint: gochecknoglobals
+// SetupSearchRoutes ...
+	storeController storage.StoreController, log log.Logger,
+) {
+	log.Warn().Msg("skipping setting up search routes because given zot binary doesn't support " +
+		"search extension, please build a binary that includes this feature")
+}
+
+// SyncOneImage ...
+var SyncOneImage = func(config *config.Config, storeController storage.StoreController, // nolint: gochecknoglobals
+	repoName, reference string, isArtifact bool, log log.Logger,
+) error {
+	log.Warn().Msg("skipping syncing on demand because given zot binary doesn't support any extensions," +
+		"please build zot full binary for this feature")
 }
