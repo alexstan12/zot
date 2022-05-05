@@ -363,13 +363,11 @@ func (c *Controller) StartBackgroundTasks(reloadCtx context.Context) {
 			// Enable extensions if extension config is provided for subImageStore
 			if c.Config != nil && c.Config.Extensions != nil {
 				if c.Config.Extensions.Metrics != nil {
-					// ext.Ext.EnableMetricsExtension(c.Config, c.Log, storageConfig.RootDirectory)
-					ext.Ext.Invoke("EnableMetricsExtension", c.Config, c.Log, storageConfig.RootDirectory)
+					ext.EnableMetricsExtension(c.Config, c.Log, storageConfig.RootDirectory)
 				}
 
 				if c.Config.Extensions.Search != nil {
-					// ext.Ext.EnableSearchExtension(c.Config, c.Log, storageConfig.RootDirectory)
-					ext.Ext.Invoke("EnableSearchExtension", c.Config, c.Log, storageConfig.RootDirectory)
+					ext.EnableSearchExtension(c.Config, c.Log, storageConfig.RootDirectory)
 				}
 			}
 		}
