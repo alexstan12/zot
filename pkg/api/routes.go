@@ -1352,11 +1352,10 @@ func getImageManifest(routeHandler *RouteHandler, imgStore storage.ImageStore, n
 					content, digest, mediaType, err = imgStore.GetImageManifest(name, reference)
 				}
 			}
+		} else {
+			return []byte{}, "", "", err
 		}
-	} else {
-		return []byte{}, "", "", err
 	}
-
 	return content, digest, mediaType, err
 }
 
@@ -1379,7 +1378,6 @@ func getReferrers(routeHandler *RouteHandler, imgStore storage.ImageStore, name,
 
 				return []artifactspec.Descriptor{}, err
 			}
-			
 
 			refs, err = imgStore.GetReferrers(name, digest, artifactType)
 		}
