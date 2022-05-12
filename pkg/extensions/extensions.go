@@ -8,6 +8,7 @@ import (
 	goSync "sync"
 	"time"
 
+	gqlHandler "github.com/99designs/gqlgen/graphql/handler"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"zotregistry.io/zot/pkg/api/config"
@@ -18,6 +19,7 @@ import (
 	cveinfo "zotregistry.io/zot/pkg/extensions/search/cve"
 	"zotregistry.io/zot/pkg/extensions/sync"
 	"zotregistry.io/zot/pkg/log"
+)
 
 // nolint: gochecknoinits
 func init() {
@@ -43,7 +45,7 @@ func init() {
 		return err
 	}
 
-	DownloadTrivyDB = func(dbDir string, log log.Logger, updateInterval time.Duration) error {
+	downloadTrivyDB = func(dbDir string, log log.Logger, updateInterval time.Duration) error {
 		for {
 			log.Info().Msg("updating the CVE database")
 
@@ -69,7 +71,7 @@ func init() {
 			}
 
 			go func() {
-				err := DownloadTrivyDB(rootDir, log,
+				err := downloadTrivyDB(rootDir, log,
 					config.Extensions.Search.CVE.UpdateInterval)
 				if err != nil {
 					log.Error().Err(err).Msg("error while downloading TrivyDB")

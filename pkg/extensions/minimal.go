@@ -11,7 +11,7 @@ import (
 )
 
 // DownloadTrivyDB ...
-var DownloadTrivyDB = func(dbDir string, log log.Logger, // nolint: gochecknoglobals
+var downloadTrivyDB = func(dbDir string, log log.Logger, // nolint: gochecknoglobals
 	updateInterval time.Duration,
 ) error {
 	return nil
@@ -69,4 +69,5 @@ var SyncOneImage = func(config *config.Config, storeController storage.StoreCont
 ) error {
 	log.Warn().Msg("skipping syncing on demand because given zot binary doesn't support any extensions," +
 		"please build zot full binary for this feature")
+		return nil
 }

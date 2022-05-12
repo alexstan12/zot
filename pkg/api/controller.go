@@ -324,8 +324,7 @@ func (c *Controller) LoadNewConfig(reloadCtx context.Context, config *config.Con
 	if config.Extensions != nil && config.Extensions.Sync != nil {
 		// reload sync config
 		c.Config.Extensions.Sync = config.Extensions.Sync
-		// ext.Ext.EnableSyncExtension(reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
-		ext.Ext.Invoke("EnableSyncExtension", reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
+		ext.EnableSyncExtension(reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
 	} else if c.Config.Extensions != nil {
 		c.Config.Extensions.Sync = nil
 	}
@@ -376,13 +375,11 @@ func (c *Controller) StartBackgroundTasks(reloadCtx context.Context) {
 	// Enable extensions if extension config is provided for storeController
 	if c.Config.Extensions != nil {
 		if c.Config.Extensions.Sync != nil && *c.Config.Extensions.Sync.Enable {
-			// ext.Ext.EnableSyncExtension(reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
-			ext.Ext.Invoke("EnableSyncExtension", reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
+			ext.EnableSyncExtension(reloadCtx, c.Config, c.wgShutDown, c.StoreController, c.Log)
 		}
 	}
 
 	if c.Config.Extensions != nil {
-		// ext.Ext.EnableScrubExtension(c.Config, c.StoreController, c.Log)
-		ext.Ext.Invoke("EnableScrubExtension", c.Config, c.StoreController, c.Log)
+		ext.EnableScrubExtension(c.Config, c.StoreController, c.Log)
 	}
 }
