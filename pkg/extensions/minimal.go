@@ -55,8 +55,8 @@ var SetupMetricsRoutes = func(conf *config.Config, router *mux.Router, // nolint
 		"metrics extension, please build a binary that includes this feature")
 }
 
-var SetupSearchRoutes = func(conf *config.Config, router *mux.Router, // nolint: gochecknoglobals
 // SetupSearchRoutes ...
+var SetupSearchRoutes = func(conf *config.Config, router *mux.Router, // nolint: gochecknoglobals
 	storeController storage.StoreController, log log.Logger,
 ) {
 	log.Warn().Msg("skipping setting up search routes because given zot binary doesn't support " +
