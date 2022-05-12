@@ -75,7 +75,7 @@ cli: modcheck
 
 .PHONY: bench
 bench: modcheck
-	env CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build -o bin/zb-$(OS)-$(ARCH) -buildmode=pie -tags sync,search,scrub,metrics,ui_base,containers_image_openpgp -v -trimpath -ldflags "-X zotregistry.io/zot/pkg/api/config.Commit=${COMMIT} -X zotregistry.io/zot/pkg/api/config.BinaryType=extended -X zotregistry.io/zot/pkg/api/config.GoVersion=${GO_VERSION} -s -w" ./cmd/zb
+	env CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build -o bin/zb-$(OS)-$(ARCH)-init -buildmode=pie -tags sync,search,scrub,metrics,ui_base,containers_image_openpgp -v -trimpath -ldflags "-X zotregistry.io/zot/pkg/api/config.Commit=${COMMIT} -X zotregistry.io/zot/pkg/api/config.BinaryType=extended -X zotregistry.io/zot/pkg/api/config.GoVersion=${GO_VERSION} -s -w" ./cmd/zb
 
 .PHONY: exporter-minimal
 exporter-minimal: modcheck
@@ -102,7 +102,7 @@ $(TESTDATA): check-skopeo
 run-bench: binary-init bench
 	bin/zot-$(OS)-$(ARCH)-init serve examples/config-bench.json &
 	sleep 5
-	bin/zb-$(OS)-$(ARCH) -c 10 -n 100 -o $(BENCH_OUTPUT) http://localhost:8080
+	bin/zb-$(OS)-$(ARCH)-init -c 10 -n 100 -o $(BENCH_OUTPUT) http://localhost:8080
 	killall -r zot-*
 
 .PHONY: check-skopeo
